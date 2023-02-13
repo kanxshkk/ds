@@ -1,0 +1,90 @@
+'''
+f=open('sample.txt','r')
+plaintext=f.read()
+'''
+def encrypt_caesar(plaintext):
+    data=list(plaintext)
+    for i in range(len(data)):
+        if data[i].isalpha():
+            if ord(data[i])+3 > 90:
+                data[i]=chr(ord(data[i])-26+3)
+            else:
+                data[i]=chr(ord(data[i]) +3)
+    return ''.join(data)
+'''
+encrypt_caesar('PYTHON')
+Out[8]: 'SBWKRQ'
+'''
+
+
+def decrypt_caesar(ciphertext):
+    data=list(ciphertext)
+    for i in range(len(data)):
+        if data[i].isalpha():
+            if ord(data[i])-3 < 65:
+                data[i]=chr(ord(data[i])+26-3)
+            else:
+                data[i]=chr(ord(data[i]) -3)
+    return ''.join(data)
+
+'''
+decrypt_caesar('SBWKRQ')
+Out[10]: 'PYTHON'
+'''
+
+def generateKey(string, key):
+	key = list(key)
+	if len(string) == len(key):
+		return(key)
+	else:
+		for i in range(len(string) - len(key)):
+			key.append(key[i % len(key)])
+	return("" . join(key))
+	
+def encrypt_vigenere(string, key):
+	cipher_text = []
+	for i in range(len(string)):
+		x = (ord(string[i]) + ord(key[i])) % 26
+		x += ord('A')
+		cipher_text.append(chr(x))
+	return("" . join(cipher_text))
+	
+def decrypt_vigenere(cipher_text, key):
+	orig_text = []
+	for i in range(len(cipher_text)):
+		x = (ord(cipher_text[i]) - ord(key[i]) + 26) % 26
+		x += ord('A')
+		orig_text.append(chr(x))
+	return("" . join(orig_text))
+	
+'''
+	key = generateKey(string, keyword)
+	cipher_text = cipherText(string,key)
+    
+    encrypt_vigenere('ATTACKATDAWN',key)
+    Out[22]: 'LXFOPVEFRNHR'
+
+    decrypt_vigenere('LXFOPVEFRNHR',key)
+    Out[23]: 'ATTACKATDAWN'
+'''
+
+if __name__ == "__main__":
+    inp=input("ENTER MSG TO STORE IN FILE(caesar) :")
+    f=open('caesar.txt','w')
+    enc=encrypt_caesar(inp)
+    print(enc)
+    f.write(enc)
+    f.close()
+    f=open('caesar.txt','r')
+    print( decrypt_caesar( f.read() ) )
+    
+    inp=input("ENTER MSG TO STORE IN FILE(vigenere) :")
+    k=input("KEY:")
+    KEY=generateKey(inp,k)
+    f=open('vigenere.txt','w')
+    enc=encrypt_vigenere(inp,KEY)
+    print(enc)
+    f.write(enc)
+    f.close()
+    f=open('vigenere.txt','r')
+    print( decrypt_vigenere( f.read() ,KEY ) )
