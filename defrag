@@ -1,0 +1,11 @@
+with open('sample_file.txt','rb') as f:
+        datafragment = f.readlines()
+    datafragments = str()
+    for i in datafragment:
+        datafragments += ''.join(re.findall("[^\n\r]",i.decode('ascii')))
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind((socket.gethostname(),9994))
+    server_socket.listen()
+    client_socket,address = server_socket.accept()
+    client_socket.send(datafragments.encode('ascii'))
+    client_socket.close()
